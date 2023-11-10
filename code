@@ -1,0 +1,17 @@
+import win32com.client
+from pythoncom import com_error
+from time import sleep
+import pandas as pd
+
+SapGuiAuto = win32com.client.GetObject('SAPGUI')
+application = SapGuiAuto.GetScriptingEngine
+conn = application.Children(0)
+session = conn.Children(0)
+
+
+dados = pd.read_excel("excel.xlsx", sheet_name='Nome_aba_planilha' ,dtype=object)
+for index, row in dados.iterrows():
+    session.findById("wnd[0]/usr/ctxtRC27M-MATNR").text = row.material
+    session.findById("wnd[0]/usr/ctxtRC27M-WERKS").text = "fab4"
+    session.findById("wnd[0]/tbar[1]/btn[5]").press()
+
